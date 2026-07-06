@@ -112,7 +112,8 @@ macOS o Linux:
 cp .env.example .env
 ```
 
-La plantilla ya contiene la URL y el modelo de Gemini. Para probar el modo híbrido solo tienes que añadir la clave temporal recibida en `LLM_API_KEY`. Si no dispones de clave, establece `LLM_ENABLED=false` para utilizar únicamente la extracción local.
+> [!IMPORTANT]
+> La plantilla ya contiene la URL y el modelo de Gemini. Para probar el modo híbrido solo tienes que añadir la clave temporal recibida en `LLM_API_KEY`. Si no dispones de clave, establece `LLM_ENABLED=false` para utilizar únicamente la extracción local.
 
 #### 2. Construir y arrancar
 
