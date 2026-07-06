@@ -1,4 +1,4 @@
-!.env.example
+.env
 .venv/
 __pycache__/
 .pytest_cache/
@@ -15,7 +15,6 @@ frontend/node_modules/
 .vercel/
 .railway/
 AGENTS.md
-README.md
 docs/
 *.log
 Thumbs.db
