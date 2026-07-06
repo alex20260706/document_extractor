@@ -1,0 +1,128 @@
+<section class="result" aria-labelledby="result-title">
+  <header class="result-header">
+    <div>
+      <p class="eyebrow">EXTRACTION RESULT</p>
+      <h2 id="result-title">Invoice data</h2>
+      <p class="result-intro">Review the extracted values before using them in another system.</p>
+    </div>
+    <span class="status" [class]="'status ' + result().status">
+      <span class="status-dot" aria-hidden="true"></span>
+      {{ statusLabel(result().status) }}
+    </span>
+  </header>
+
+  <div class="metadata" aria-label="Extraction details">
+    <div class="metadata-item">
+      <span>Content source</span>
+      <strong>{{ methodLabel(result().acquisition_method) }}</strong>
+    </div>
+    <div class="metadata-item">
+      <span>Extraction strategy</span>
+      <strong>{{ methodLabel(result().extraction_method) }}</strong>
+    </div>
+    <div class="metadata-item">
+      <span>Line items</span>
+      <strong>{{ result().line_items.length }}</strong>
+    </div>
+  </div>
+
+  <section class="content-section" aria-labelledby="fields-title">
+    <div class="section-heading">
+      <div>
+        <p class="section-number">01</p>
+        <h3 id="fields-title">Document fields</h3>
+      </div>
+      <p>Confidence indicates how reliably each value was detected.</p>
+    </div>
+
+    <div class="field-grid">
+      @for (entry of fieldEntries(); track entry[0]) {
+        <article class="field" [class.field-missing]="entry[1].missing">
+          <div class="field-heading">
+            <span class="field-label">{{ entry[1].label }}</span>
+            <span class="confidence-value">{{ entry[1].confidence | percent:'1.0-0' }}</span>
+          </div>
+          <strong>{{ displayFieldValue(entry[1]) }}</strong>
+          <div
+            class="confidence-track"
+            role="progressbar"
+            [attr.aria-label]="entry[1].label + ' confidence'"
+            [attr.aria-valuenow]="entry[1].confidence * 100"
+            aria-valuemin="0"
+            aria-valuemax="100"
+          >
+            <span [style.width.%]="entry[1].confidence * 100"></span>
+          </div>
+        </article>
+      }
+    </div>
+  </section>
+
+  <section class="content-section" aria-labelledby="lines-title">
+    <div class="section-heading">
+      <div>
+        <p class="section-number">02</p>
+        <h3 id="lines-title">Line items</h3>
+      </div>
+      <p>Amounts are displayed exactly as returned by the extraction service.</p>
+    </div>
+
+    @if (result().line_items.length) {
+      <div class="table-frame">
+        <div class="table-scroll">
+          <table>
+            <caption>Extracted invoice line items</caption>
+            <thead>
+              <tr>
+                <th scope="col">Description</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Unit price</th>
+                <th scope="col">Total</th>
+                <th scope="col">Confidence</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (line of result().line_items; track $index) {
+                <tr>
+                  <td>{{ line.description }}</td>
+                  <td>{{ line.quantity ?? '-' }}</td>
+                  <td>{{ line.unit_price === null ? '-' : (line.unit_price | number:'1.2-2') }}</td>
+                  <td>{{ line.line_total === null ? '-' : (line.line_total | number:'1.2-2') }}</td>
+                  <td><span class="confidence-chip">{{ line.confidence | percent:'1.0-0' }}</span></td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    } @else {
+      <div class="empty-state">
+        <span aria-hidden="true">—</span>
+        <p>No line items were detected.</p>
+      </div>
+    }
+  </section>
+
+  @if (result().warnings.length || result().errors.length) {
+    <div class="messages">
+      @if (result().warnings.length) {
+        <aside class="message warning">
+          <span class="message-icon" aria-hidden="true">!</span>
+          <div>
+            <h3>Review recommended</h3>
+            <ul>@for (warning of result().warnings; track $index) { <li>{{ warning }}</li> }</ul>
+          </div>
+        </aside>
+      }
+      @if (result().errors.length) {
+        <aside class="message processing-error" role="alert">
+          <span class="message-icon" aria-hidden="true">×</span>
+          <div>
+            <h3>The extraction could not be completed</h3>
+            <ul>@for (error of result().errors; track $index) { <li>{{ error.message }}</li> }</ul>
+          </div>
+        </aside>
+      }
+    </div>
+  }
+</section>

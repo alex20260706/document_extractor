@@ -1,0 +1,1 @@
+"""Invoice-specific domain concepts."""

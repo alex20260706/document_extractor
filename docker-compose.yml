@@ -1,0 +1,38 @@
+name: zebra-document-extractor
+
+services:
+  backend:
+    build: ./backend
+    init: true
+    restart: unless-stopped
+    environment:
+      APP_ENV: production
+      MAX_UPLOAD_MB: 10
+      CORS_ORIGINS: http://localhost:4200,http://localhost:8080
+      # Local-first extraction with automatic LLM fallback when configured.
+      LLM_ENABLED: ${LLM_ENABLED:-true}
+      LLM_BASE_URL: ${LLM_BASE_URL:-}
+      LLM_API_KEY: ${LLM_API_KEY:-}
+      LLM_MODEL: ${LLM_MODEL:-}
+      LLM_TIMEOUT_SECONDS: ${LLM_TIMEOUT_SECONDS:-30}
+      LLM_MAX_INPUT_CHARACTERS: ${LLM_MAX_INPUT_CHARACTERS:-60000}
+      LLM_MAX_OUTPUT_TOKENS: ${LLM_MAX_OUTPUT_TOKENS:-2500}
+      LLM_STRICT_SCHEMA: ${LLM_STRICT_SCHEMA:-false}
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/health')"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+
+  frontend:
+    build: ./frontend
+    init: true
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      - "8080:80"

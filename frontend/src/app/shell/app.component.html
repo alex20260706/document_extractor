@@ -1,0 +1,84 @@
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="/" aria-label="Zebra Extract home">
+      <span class="brand-mark" aria-hidden="true">
+        <span></span><span></span><span></span>
+      </span>
+      <span class="brand-copy">
+        <strong>Zebra</strong>
+        <small>Document Extractor</small>
+      </span>
+    </a>
+    <div class="privacy-pill">
+      <span class="privacy-dot" aria-hidden="true"></span>
+      Local-first processing
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="hero" aria-labelledby="page-title">
+    <div class="hero-copy">
+      <p class="eyebrow"><span aria-hidden="true"></span> DOCUMENT INTELLIGENCE</p>
+      <h1 id="page-title">From document to <em>structured data</em>, in moments.</h1>
+      <p class="hero-description">
+        Upload a PDF or image and transform it into clear, reviewable information with confidence scores.
+      </p>
+    </div>
+
+    <ol class="workflow" aria-label="Extraction workflow">
+      <li
+        [class.active]="workflowStep() === 1"
+        [class.complete]="workflowStep() > 1"
+        [attr.aria-current]="workflowStep() === 1 ? 'step' : null"
+      >
+        <span>1</span><div><strong>Select</strong><small>Document type</small></div>
+      </li>
+      <li
+        [class.active]="workflowStep() === 2"
+        [class.complete]="workflowStep() > 2"
+        [attr.aria-current]="workflowStep() === 2 ? 'step' : null"
+      >
+        <span>2</span><div><strong>Extract</strong><small>Temporary processing</small></div>
+      </li>
+      <li
+        [class.active]="workflowStep() === 3"
+        [attr.aria-current]="workflowStep() === 3 ? 'step' : null"
+      >
+        <span>3</span><div><strong>Review</strong><small>Structured result</small></div>
+      </li>
+    </ol>
+  </section>
+
+  <app-upload-panel [busy]="loading()" (extractionRequested)="extract($event)" />
+
+  @if (loading()) {
+    <div class="loading-card" role="status" aria-live="polite">
+      <div class="loader" aria-hidden="true"><span></span></div>
+      <div>
+        <strong>Analysing {{ filename() }}</strong>
+        <span>Reading content and extracting structured fields…</span>
+      </div>
+      <span class="loading-pulse" aria-hidden="true"></span>
+    </div>
+  }
+
+  @if (error()) {
+    <div class="error-card" role="alert">
+      <span class="error-icon" aria-hidden="true">!</span>
+      <div>
+        <strong>The document could not be processed</strong>
+        <span>{{ error() }}</span>
+      </div>
+    </div>
+  }
+
+  @if (result(); as extraction) {
+    <app-extraction-result [result]="extraction" />
+  }
+</main>
+
+<footer>
+  <span>Zebra Document Extractor</span>
+  <span>Temporary processing · No application storage</span>
+</footer>

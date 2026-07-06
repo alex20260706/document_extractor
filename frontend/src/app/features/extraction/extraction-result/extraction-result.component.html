@@ -1,0 +1,6 @@
+@if (invoiceResult(); as invoice) {
+  <app-invoice-result [result]="invoice" />
+}
+@if (purchaseOrderResult(); as purchaseOrder) {
+  <app-purchase-order-result [result]="purchaseOrder" />
+}
