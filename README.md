@@ -498,3 +498,10 @@ Además, reforzaría la parte técnica con mejoras proporcionadas al uso real:
 Consideré dos extremos. Una solución basada solo en reglas es rápida, barata, reproducible, fácil de probar y mantiene los datos dentro del backend, pero se vuelve frágil cuando cambian el proveedor, el idioma o la plantilla. Una solución basada solo en LLM reduce las reglas específicas y entiende mejor las variaciones, pero introduce respuestas menos deterministas, coste, latencia, dependencia externa y riesgos de privacidad; además, usarla incluso para campos que ya pueden resolverse localmente sería innecesario.
 
 Por eso no elegí ninguno de los dos extremos. El enfoque final es híbrido y local-first: extracción de texto u OCR, reglas y evaluación de confianza como camino principal; enriquecimiento semántico únicamente para los huecos. Así se mantiene un comportamiento útil sin credenciales, se reducen las llamadas externas y el resultado del modelo queda limitado por schemas y por un merge que protege los valores locales fiables.
+
+
+## Licencia
+
+Todos los derechos reservados.
+
+Este repositorio y su código fuente se publican únicamente con fines de evaluación como parte de una prueba técnica. No se concede permiso para usar, copiar, modificar, distribuir, sublicenciar ni crear trabajos derivados de este software sin la autorización previa y por escrito del autor.
