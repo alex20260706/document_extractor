@@ -80,6 +80,12 @@ El proyecto puede probarse de tres formas, en este orden recomendado:
 2. **Docker Compose:** reproduce toda la aplicación localmente con Tesseract y sus idiomas ya instalados.
 3. **Ejecución local sin Docker:** es la opción más cómoda para desarrollar, pero requiere instalar Python, Node y Tesseract en el equipo.
 
+| Modo | Frontend | Backend | Comunicación |
+|---|---|---|---|
+| Local sin Docker | `http://localhost:4200` | `http://localhost:8000` | Angular reenvía `/api` mediante su proxy de desarrollo |
+| Docker Compose | `http://localhost:8080` | `http://localhost:8000` | Nginx escucha dentro del contenedor en `80` y reenvía `/api` al backend en `8000` |
+| Hospedado | Vercel mediante HTTPS | Railway mediante HTTPS | El navegador llama al dominio público del backend |
+
 ### Opción A: Docker Compose (recomendada)
 
 Esta opción solo necesita Docker Desktop o Docker Engine con el plugin de Compose. No requiere instalar Python, Node, Angular CLI ni Tesseract en el sistema anfitrión.
@@ -458,19 +464,19 @@ Desde el punto de vista de producto, no existen usuarios, clientes, permisos, hi
 
 Empezaría por construir el producto alrededor del extractor:
 
-- Autenticación, organizaciones, roles y permisos;
-- PostgreSQL para usuarios, clientes, documentos, resultados, versiones y correcciones;
-- Almacenamiento de objetos compatible con S3 para originales y derivados, con cifrado, retención y borrado verificable;
-- Historial, búsqueda, revisión manual, corrección por campo y exportación a sistemas externos;
+- Autenticación, organizaciones, roles y permisos.
+- PostgreSQL para usuarios, clientes, documentos, resultados, versiones y correcciones.
+- Almacenamiento de objetos compatible con S3 para originales y derivados, con cifrado, retención y borrado verificable.
+- Historial, búsqueda, revisión manual, corrección por campo y exportación a sistemas externos.
 - Nuevos tipos documentales como albaranes, partes de trabajo e informes de mantenimiento, cada uno con su estrategia, modelos, parser y tests.
 
 Además, reforzaría la parte técnica con mejoras proporcionadas al uso real:
 
-- Más documentos reales anonimizados, métricas por campo y casos de regresión;
-- Mejoras de OCR para orientación, ruido y layouts más complejos;
-- Integración continua para ejecutar automáticamente tests, lint y builds;
-- Gestión segura de secretos y credenciales;
-- Observabilidad mejorada mediante logs y métricas cuando fuera necesario;
+- Más documentos reales anonimizados, métricas por campo y casos de regresión.
+- Mejoras de OCR para orientación, ruido y layouts más complejos.
+- Integración continua para ejecutar automáticamente tests, lint y builds.
+- Gestión segura de secretos y credenciales.
+- Observabilidad mejorada mediante logs y métricas cuando fuera necesario.
 - Elección de la infraestructura y el servidor según el volumen, el coste, los requisitos legales y el mantenimiento que pudiera asumir el equipo.
 
 ### ¿Qué enfoque de extracción consideraste y por qué descartaste el alternativo?
