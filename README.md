@@ -113,7 +113,20 @@ cp .env.example .env
 ```
 
 > [!IMPORTANT]
-> La plantilla ya contiene la URL y el modelo de Gemini. Para probar el modo híbrido solo tienes que añadir la clave temporal recibida en `LLM_API_KEY`. Si no dispones de clave, establece `LLM_ENABLED=false` para utilizar únicamente la extracción local.
+> La plantilla ya incluye la URL y el modelo de Gemini. Para probar el modo híbrido, añade tu clave de API en `LLM_API_KEY`.
+>
+> Si no tienes una clave o la clave de ejemplo ha caducado:
+>
+> 1. Accede a https://aistudio.google.com/apikey
+> 2. Inicia sesión con tu cuenta de Google.
+> 3. Pulsa **Create API key**.
+> 4. Copia la clave generada y pégala en `LLM_API_KEY`.
+>
+> Si prefieres utilizar únicamente el procesamiento local, establece:
+>
+> ```env
+> LLM_ENABLED=false
+> ```
 
 #### 2. Construir y arrancar
 
